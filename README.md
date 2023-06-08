@@ -15,8 +15,8 @@ A simple website using plain CSS and Vanilla JavaScript to display the members o
 
 ## Your Tasks
 
-- [ ] Think of another reasonable filter and implement it.
-- [ ] There is more to a member than their name and place of work. Provide a way to get more details about a member, e.g. a bio and the date they joined.
-- [ ] Implement pagination.
+- [x] Think of another reasonable filter and implement it.
+- [x] There is more to a member than their name and place of work. Provide a way to get more details about a member, e.g. a bio and the date they joined.
+- [x] Implement pagination.
 - [ ] When reloading the page, make sure the users do not change.
 - [ ] Provide a way to delete a user.
