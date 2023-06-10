@@ -17,14 +17,26 @@ const allUsers = faker.helpers.multiple(
     company: Math.random() > 0.4 ? faker.company.name() : '',
     job: faker.person.jobType(),
     country: faker.location.country(),
+    dateJoined:
+      2000 +
+      Math.ceil(Math.random() * 23) +
+      ' - ' +
+      Math.ceil(Math.random() * 12),
   }),
   { count: initalUserCount }
 );
+
+let managementJobs = ['Manager', 'Supervisor', 'Director'];
 
 const allFilters = [
   ['All', () => renderUsers(allUsers)],
   ['Employed', () => renderUsers(allUsers.filter((user) => user.company))],
   ['Unemployed', () => renderUsers(allUsers.filter((user) => !user.company))],
+  [
+    'Management',
+    () =>
+      renderUsers(allUsers.filter((user) => managementJobs.includes(user.job))),
+  ],
 ];
 
 renderFilters(allFilters);
@@ -41,11 +53,13 @@ function renderUsers(users) {
 
   const usersHTML = curUsers
     .map(
-      ({ username, avatar, company, country }) => `<div>
+      ({ username, avatar, company, country, job, dateJoined }) => `<div>
         <img src="${avatar}" />
         <span>${username}</span>
-        <sm>${company || 'Unemployed'}</sm>
+        <sm>${company || 'Unemployed'} </sm>
         <div title="${country}">${country}</div>
+        <p>${job}</p>
+        <p>${dateJoined}</p>
       </div>`
     )
     .join('');
