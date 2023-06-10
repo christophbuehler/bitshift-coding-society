@@ -8,25 +8,33 @@ let userCount = initalUserCount;
 let page = 0;
 let curFilter;
 
-const allUsers = faker.helpers.multiple(
-  () => ({
-    userId: faker.string.uuid(),
-    username: faker.internet.userName(),
-    email: faker.internet.email(),
-    avatar: faker.image.avatar(),
-    company: Math.random() > 0.4 ? faker.company.name() : '',
-    job: faker.person.jobType(),
-    country: faker.location.country(),
-    dateJoined:
-      2000 +
-      Math.ceil(Math.random() * 23) +
-      ' - ' +
-      Math.ceil(Math.random() * 12),
-  }),
-  { count: initalUserCount }
-);
+let allUsers;
+let myStorage = window.localStorage;
 
-let managementJobs = ['Manager', 'Supervisor', 'Director'];
+if (myStorage.getItem('users')) {
+  allUsers = JSON.parse(myStorage.getItem('users'));
+} else {
+  allUsers = faker.helpers.multiple(
+    () => ({
+      userId: faker.string.uuid(),
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      avatar: faker.image.avatar(),
+      company: Math.random() > 0.4 ? faker.company.name() : '',
+      job: faker.person.jobType(),
+      country: faker.location.country(),
+      dateJoined:
+        2000 +
+        Math.ceil(Math.random() * 23) +
+        ' - ' +
+        Math.ceil(Math.random() * 12),
+    }),
+    { count: initalUserCount }
+  );
+  myStorage.setItem('users', JSON.stringify(allUsers));
+}
+
+let managementJobs = ['Manager', 'Supervisor', 'Director', 'Executive'];
 
 const allFilters = [
   ['All', () => renderUsers(allUsers)],
