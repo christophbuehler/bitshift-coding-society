@@ -9,7 +9,12 @@ let page = 0;
 let curFilter;
 
 let allUsers;
-let myStorage = window.localStorage;
+const myStorage = window.localStorage;
+
+const updateUsers = () => {
+  myStorage.setItem('users', JSON.stringify(allUsers));
+  setFilter(curFilter);
+};
 
 if (myStorage.getItem('users')) {
   allUsers = JSON.parse(myStorage.getItem('users'));
@@ -51,6 +56,16 @@ renderFilters(allFilters);
 setFilter(0);
 renderPaginationElements();
 
+function removeUser(id) {
+  const objWithIdIndex = allUsers.findIndex((obj) => obj.userId === id);
+
+  if (objWithIdIndex > -1) {
+    all.splice(objWithIdIndex, 1);
+  }
+
+  updateUsers();
+}
+
 function renderUsers(users) {
   userCount = users.length;
 
@@ -61,17 +76,32 @@ function renderUsers(users) {
 
   const usersHTML = curUsers
     .map(
-      ({ username, avatar, company, country, job, dateJoined }) => `<div>
+      ({
+        username,
+        avatar,
+        company,
+        country,
+        job,
+        dateJoined,
+        userId,
+      }) => `<div>
         <img src="${avatar}" />
         <span>${username}</span>
         <sm>${company || 'Unemployed'} </sm>
         <div title="${country}">${country}</div>
+        <p id = "removeBtn" key="${userId}"><strong>x</strong></p>
         <p>${job}</p>
         <p>${dateJoined}</p>
       </div>`
     )
     .join('');
   document.querySelector('#users').innerHTML = usersHTML;
+
+  const removeBtn = document.getElementById('removeBtn');
+  removeBtn.addEventListener(
+    'click',
+    removeUser.bind(null, removeBtn.accessKey)
+  );
 }
 
 window.setFilter = setFilter;
