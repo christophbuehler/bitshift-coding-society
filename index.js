@@ -16,9 +16,12 @@ const updateUsers = () => {
   setFilter(curFilter);
 };
 
-if (myStorage.getItem('users')) {
-  allUsers = JSON.parse(myStorage.getItem('users'));
-} else {
+const removeUser = (index) => {
+  allUsers.splice(index, 1);
+  updateUsers();
+};
+
+const loadNewUsers = () => {
   allUsers = faker.helpers.multiple(
     () => ({
       userId: faker.string.uuid(),
@@ -37,6 +40,13 @@ if (myStorage.getItem('users')) {
     { count: initalUserCount }
   );
   myStorage.setItem('users', JSON.stringify(allUsers));
+};
+
+// setup users on reload
+if (myStorage.getItem('users')) {
+  allUsers = JSON.parse(myStorage.getItem('users'));
+} else {
+  loadNewUsers();
 }
 
 let managementJobs = ['Manager', 'Supervisor', 'Director', 'Executive'];
@@ -56,16 +66,6 @@ renderFilters(allFilters);
 setFilter(0);
 renderPaginationElements();
 
-function removeUser(id) {
-  const objWithIdIndex = allUsers.findIndex((obj) => obj.userId === id);
-
-  if (objWithIdIndex > -1) {
-    all.splice(objWithIdIndex, 1);
-  }
-
-  updateUsers();
-}
-
 function renderUsers(users) {
   userCount = users.length;
 
@@ -76,20 +76,15 @@ function renderUsers(users) {
 
   const usersHTML = curUsers
     .map(
-      ({
-        username,
-        avatar,
-        company,
-        country,
-        job,
-        dateJoined,
-        userId,
-      }) => `<div>
+      (
+        { username, avatar, company, country, job, dateJoined, userId },
+        index
+      ) => `<div>
         <img src="${avatar}" />
         <span>${username}</span>
         <sm>${company || 'Unemployed'} </sm>
         <div title="${country}">${country}</div>
-        <p id = "removeBtn" key="${userId}"><strong>x</strong></p>
+        <p id = "removeBtn" key="${index}"><strong>x</strong></p>
         <p>${job}</p>
         <p>${dateJoined}</p>
       </div>`
