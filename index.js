@@ -62,11 +62,7 @@ const allFilters = [
   ],
 ];
 
-renderFilters(allFilters);
-setFilter(0);
-renderPaginationElements();
-
-function renderUsers(users) {
+const renderUsers = (users) => {
   userCount = users.length;
 
   let curUsers = users.slice(
@@ -97,18 +93,16 @@ function renderUsers(users) {
     'click',
     removeUser.bind(null, removeBtn.accessKey)
   );
-}
+};
 
-window.setFilter = setFilter;
-
-function setFilter(index) {
+const setFilter = (index) => {
   curFilter = index;
   const filterEls = Array.from(document.querySelectorAll('#filters > div'));
   filterEls.forEach((el, i) => el.classList.toggle('selected', i === index));
   allFilters[index][1]();
-}
+};
 
-function renderFilters(filters) {
+const renderFilters = (filters) => {
   const usersHTML = filters
     .map(
       ([text], i) => `<div onclick="setFilter(${i});">
@@ -117,9 +111,9 @@ function renderFilters(filters) {
     )
     .join('');
   document.querySelector('#filters').innerHTML = usersHTML;
-}
+};
 
-function renderPaginationElements() {
+const renderPaginationElements = () => {
   const decrease = () => {
     page > 0 ? page-- : page;
     renderPaginationElements();
@@ -147,4 +141,10 @@ function renderPaginationElements() {
 
   decrBtn.addEventListener('click', decrease);
   incrBtn.addEventListener('click', increase);
-}
+};
+
+renderFilters(allFilters);
+setFilter(0);
+renderPaginationElements();
+
+window.setFilter = setFilter;
