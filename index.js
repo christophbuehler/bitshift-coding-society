@@ -134,9 +134,9 @@ function renderPaginationElements() {
 
   const usersHTML = `
     <div>
-      <button id="decrBtn"><</button>
+      <button class="decrButton" id="decrBtn"><</button>
       <p>${page + 1}</p>
-      <button id="incrBtn">></button>
+      <button class="incrButton" id="incrBtn">></button>
     </div>
   `;
 
