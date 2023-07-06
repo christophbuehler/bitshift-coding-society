@@ -1,5 +1,6 @@
 import './style.css';
 import { faker } from '@faker-js/faker';
+import { format } from 'date-fns';
 
 const initalUserCount = 16;
 const usersPerPage = 4;
@@ -31,11 +32,7 @@ const loadNewUsers = () => {
       company: Math.random() > 0.4 ? faker.company.name() : '',
       job: faker.person.jobType(),
       country: faker.location.country(),
-      dateJoined:
-        2000 +
-        Math.ceil(Math.random() * 23) +
-        ' - ' +
-        Math.ceil(Math.random() * 12),
+      dateJoined: faker.date.anytime(),
     }),
     { count: initalUserCount }
   );
@@ -80,7 +77,7 @@ const renderUsers = (users) => {
         <span>${username}</span>
         <sm>${company || 'Unemployed'} </sm>
         <div title="${country}">${country}</div>
-        <p id = "removeBtn" key="${index}"><strong>x</strong></p>
+        <p onclick="removeUser(${index})"><strong>x</strong></p>
         <p>${job}</p>
         <p>${dateJoined}</p>
       </div>`
@@ -88,11 +85,11 @@ const renderUsers = (users) => {
     .join('');
   document.querySelector('#users').innerHTML = usersHTML;
 
-  const removeBtn = document.getElementById('removeBtn');
-  removeBtn.addEventListener(
-    'click',
-    removeUser.bind(null, removeBtn.accessKey)
-  );
+  // const removeBtn = document.getElementById('removeBtn');
+  // removeBtn.addEventListener(
+  //   'click',
+  //   removeUser.bind(null, removeBtn.dataset.key)
+  // );
 };
 
 const setFilter = (index) => {
@@ -148,3 +145,4 @@ setFilter(0);
 renderPaginationElements();
 
 window.setFilter = setFilter;
+window.removeUser = removeUser;
