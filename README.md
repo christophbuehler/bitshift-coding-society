@@ -1,3 +1,5 @@
+> Project for introducing @micimac-new to web development.
+
 # Bitshift Coding Society
 
 > Project for teaching frontend development by Christoph Bühler.
